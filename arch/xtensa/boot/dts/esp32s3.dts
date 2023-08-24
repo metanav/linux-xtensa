@@ -25,5 +25,82 @@
 				reg = <0x00300000 0x00580000>;
 			};
 		};
+
+                rtc: rtc@60021000 {
+                        compatible = "espressif,esp32-rtc";
+                        reg = <0x60021000 0x2000>;
+                        xtal-freq = <2>;
+                        #clock-cells = <1>;
+                        status = "okay";
+
+                        rtc_timer: rtc_timer {
+                                compatible = "espressif,esp32-rtc-timer";
+                                slow-clk-freq = <150000>;
+                                interrupts = <39>;
+                                interrupt-parent = <&intc>;
+                                status = "okay";
+                        };
+                };
+
+                gpio: gpio {
+                        compatible = "simple-bus";
+                        gpio-map-mask = <0xffffffe0 0xffffffc0>;
+                        gpio-map-pass-thru = <0x1f 0x3f>;
+                        gpio-map = <
+                                0x00 0x0 &gpio0 0x0 0x0
+                                0x20 0x0 &gpio1 0x0 0x0
+                        >;
+                        #gpio-cells = <2>;
+                        #address-cells = <1>;
+                        #size-cells = <1>;
+                        ranges;
+
+                        gpio0: gpio@60004000 {
+                                compatible = "espressif,esp32-gpio";
+                                gpio-controller;
+                                #gpio-cells = <2>;
+                                reg = <0x60004000 0x800>;
+                                interrupts = <16>;
+                                interrupt-parent = <&intc>;
+                                /* Maximum available pins (per port)
+                                 * Actual occupied pins are specified
+                                 * on part number dtsi level, using
+                                 * the `gpio-reserved-ranges` property.
+                                 */
+                                ngpios = <32>;  /* 0..31 */
+                        };
+
+                        gpio1: gpio@60004800 {
+                                compatible = "espressif,esp32-gpio";
+                                gpio-controller;
+                                #gpio-cells = <2>;
+                                reg = <0x60004800 0x800>;
+                                interrupts = <16>;
+                                interrupt-parent = <&intc>;
+                                ngpios = <22>; /* 32..53 */
+                        };
+                };
+
+                i2c0: i2c@60013000 {
+                        compatible = "espressif,esp32-i2c";
+                        #address-cells = <1>;
+                        #size-cells = <0>;
+                        reg = <0x60013000 0x1000>;
+                        interrupts = <42>;
+                        interrupt-parent = <&intc>;
+                        clocks = <&rtc 5>;
+                        status = "okay";
+                };
+
+                i2c1: i2c@60027000 {
+                        compatible = "espressif,esp32-i2c";
+                        #address-cells = <1>;
+                        #size-cells = <0>;
+                        reg = <0x60027000 0x1000>;
+                        interrupts = <43>;
+                        interrupt-parent = <&intc>;
+                        clocks = <&rtc 6>;
+                        status = "okay";
+                };
 	};
 };
