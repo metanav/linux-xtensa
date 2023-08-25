@@ -63,5 +63,44 @@
                                 ngpios = <22>; /* 32..53 */
                         };
                 };
+
+
+                rtc: rtc@60021000 {
+                        compatible = "espressif,esp32-rtc";
+                        reg = <0x60021000 0x2000>;
+                        xtal-freq = <2>;
+                        #clock-cells = <1>;
+                        status = "okay";
+
+                        rtc_timer: rtc_timer {
+                                compatible = "espressif,esp32-rtc-timer";
+                                slow-clk-freq = <150000>;
+                                interrupts = <39>;
+                                interrupt-parent = <&intc>;
+                                status = "okay";
+                        };
+                };
+
+                i2c0: i2c@60013000 {
+                        compatible = "espressif,esp32-i2c";
+                        #address-cells = <1>;
+                        #size-cells = <0>;
+                        reg = <0x60013000 0x1000>;
+                        interrupts = <42>;
+                        interrupt-parent = <&intc>;
+                        clocks = <&rtc 5>;
+                        status = "okay";
+                };
+
+                i2c1: i2c@60027000 {
+                        compatible = "espressif,esp32-i2c";
+                        #address-cells = <1>;
+                        #size-cells = <0>;
+                        reg = <0x60027000 0x1000>;
+                        interrupts = <43>;
+                        interrupt-parent = <&intc>;
+                        clocks = <&rtc 6>;
+                        status = "okay";
+                };
 	};
 };
