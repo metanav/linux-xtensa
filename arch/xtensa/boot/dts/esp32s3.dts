@@ -25,5 +25,43 @@
 				reg = <0x00300000 0x00580000>;
 			};
 		};
+
+                gpio: gpio {
+                        compatible = "simple-bus";
+                        gpio-map-mask = <0xffffffe0 0xffffffc0>;
+                        gpio-map-pass-thru = <0x1f 0x3f>;
+                        gpio-map = <
+                                0x00 0x0 &gpio0 0x0 0x0
+                                0x20 0x0 &gpio1 0x0 0x0
+                        >;
+                        #gpio-cells = <2>;
+                        #address-cells = <1>;
+                        #size-cells = <1>;
+                        ranges;
+
+                        gpio0: gpio@60004000 {
+                                compatible = "espressif,esp32-gpio";
+                                gpio-controller;
+                                #gpio-cells = <2>;
+                                reg = <0x60004000 0x800>;
+                                interrupts = <16>;
+                                interrupt-parent = <&intc>;
+                                /* Maximum available pins (per port)
+                                 * Actual occupied pins are specified
+                                 * on part number dtsi level, using
+                                 * the `gpio-reserved-ranges` property.
+                                 */
+                                ngpios = <32>;  /* 0..31 */
+                        };
+                        gpio1: gpio@60004800 {
+                                compatible = "espressif,esp32-gpio";
+                                gpio-controller;
+                                #gpio-cells = <2>;
+                                reg = <0x60004800 0x800>;
+                                interrupts = <16>;
+                                interrupt-parent = <&intc>;
+                                ngpios = <22>; /* 32..53 */
+                        };
+                };
 	};
 };
