@@ -40,7 +40,7 @@
                         ranges;
 
                         gpio0: gpio@60004000 {
-                                compatible = "espressif,esp32-gpio";
+                                compatible = "esp,esp32-gpio";
                                 gpio-controller;
                                 #gpio-cells = <2>;
                                 reg = <0x60004000 0x800>;
@@ -54,7 +54,7 @@
                                 ngpios = <32>;  /* 0..31 */
                         };
                         gpio1: gpio@60004800 {
-                                compatible = "espressif,esp32-gpio";
+                                compatible = "esp,esp32-gpio";
                                 gpio-controller;
                                 #gpio-cells = <2>;
                                 reg = <0x60004800 0x800>;
@@ -66,7 +66,7 @@
 
 
                 rtc: rtc@60021000 {
-                        compatible = "espressif,esp32-rtc";
+                        compatible = "esp,esp32-rtc";
                         reg = <0x60021000 0x2000>;
                         xtal-freq = <2>;
                         #clock-cells = <1>;
@@ -82,7 +82,7 @@
                 };
 
                 i2c0: i2c@60013000 {
-                        compatible = "espressif,esp32-i2c";
+                        compatible = "esp,esp32-i2c";
                         #address-cells = <1>;
                         #size-cells = <0>;
                         reg = <0x60013000 0x1000>;
@@ -93,7 +93,7 @@
                 };
 
                 i2c1: i2c@60027000 {
-                        compatible = "espressif,esp32-i2c";
+                        compatible = "esp,esp32-i2c";
                         #address-cells = <1>;
                         #size-cells = <0>;
                         reg = <0x60027000 0x1000>;
